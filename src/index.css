@@ -7,26 +7,26 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 220 9% 12%;
+    --background: 210 40% 98%;
+    --foreground: 222 47% 11%;
 
     --card: 0 0% 100%;
-    --card-foreground: 220 9% 12%;
+    --card-foreground: 222 47% 11%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 220 9% 12%;
+    --popover-foreground: 222 47% 11%;
 
-    --primary: 210 100% 50%;
+    --primary: 246 96% 64%;
     --primary-foreground: 210 40% 98%;
 
-    --secondary: 210 20% 96%;
-    --secondary-foreground: 220 9% 12%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 11%;
 
-    --muted: 210 20% 96%;
-    --muted-foreground: 220 5% 40%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 25% 40%;
 
-    --accent: 210 20% 96%;
-    --accent-foreground: 220 9% 12%;
+    --accent: 216 100% 97%;
+    --accent-foreground: 222 47% 11%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 210 40% 98%;
@@ -102,5 +102,128 @@
   
   .link-underline:hover::after {
     @apply w-full;
+  }
+  
+  /* AI themed components */
+  .ai-card {
+    @apply relative overflow-hidden rounded-xl bg-white p-6 shadow-md border border-border;
+  }
+  
+  .ai-card::before {
+    content: '';
+    @apply absolute -right-12 -top-12 h-24 w-24 rounded-full bg-primary/10 transition-transform duration-700;
+  }
+  
+  .ai-card:hover::before {
+    @apply scale-[2.5];
+  }
+  
+  .tech-pill {
+    @apply inline-flex items-center rounded-full bg-accent px-3 py-1 text-xs font-medium text-primary shadow-sm transition-colors hover:bg-primary hover:text-white;
+  }
+  
+  .ai-gradient-text {
+    @apply text-transparent bg-clip-text bg-gradient-to-r from-primary via-purple-500 to-blue-500 inline-block;
+  }
+  
+  .code-block {
+    @apply font-mono text-sm bg-black text-white p-4 rounded-lg overflow-auto;
+  }
+  
+  .terminal-text {
+    @apply font-mono text-sm;
+  }
+  
+  .terminal-prompt::before {
+    content: '> ';
+    @apply text-primary;
+  }
+  
+  .floating {
+    animation: floating 3s ease-in-out infinite;
+  }
+  
+  .particle-bg {
+    @apply relative overflow-hidden;
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(var(--primary), 0.7);
+  }
+  50% {
+    box-shadow: 0 0 20px 5px rgba(var(--primary), 0.3);
+  }
+}
+
+@keyframes floating {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+@keyframes blink {
+  50% { border-color: transparent }
+}
+
+@keyframes gradient-shift {
+  0% { background-position: 0% 50% }
+  50% { background-position: 100% 50% }
+  100% { background-position: 0% 50% }
+}
+
+@keyframes matrix-rain {
+  0% {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@layer utilities {
+  .text-glow {
+    text-shadow: 0 0 10px rgba(var(--primary), 0.5);
+  }
+  
+  .typing-animation {
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    animation: typing 3.5s steps(40, end), blink .75s step-end infinite;
+    border-right: 3px solid;
+  }
+  
+  .gradient-bg {
+    background: linear-gradient(-45deg, #6366f1, #8b5cf6, #3b82f6, #0ea5e9);
+    background-size: 400% 400%;
+    animation: gradient-shift 15s ease infinite;
+  }
+  
+  .rotate-slow {
+    animation: rotate 15s linear infinite;
+  }
+  
+  .animate-pulse-glow {
+    animation: pulse-glow 2s infinite;
   }
 }
