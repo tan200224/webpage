@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ExternalLink, Github, Code, BrainCircuit, Cpu, Bot, Film } from "lucide-react";
+import { Link } from "react-router-dom";
 
 // Archie's actual projects
 const PROJECTS_DATA = [
@@ -23,9 +24,10 @@ const PROJECTS_DATA = [
     description: "Innovative Annotation-to-3D-CT-Scan generative model built from scratch with PyTorch to produce realistic synthetic medical image data.",
     image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=2670&auto=format&fit=crop",
     technologies: ["PyTorch", "Generative AI", "3D Modeling", "Medical Imaging", "Data Synthesis"],
-    liveUrl: "#",
+    liveUrl: "/synthetic-ct-demo",
     githubUrl: "https://github.com/tan200224",
-    icon: <Cpu className="h-10 w-10 text-purple-500" />
+    icon: <Cpu className="h-10 w-10 text-purple-500" />,
+    hasDemo: true
   },
   {
     id: 3,
@@ -160,16 +162,30 @@ const Projects = () => {
                         <span>Code</span>
                       </a>
                     </Button>
-                    <Button
-                      size="sm"
-                      className="gap-2 button-hover gradient-bg text-white border-none"
-                      asChild
-                    >
-                      <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
-                        <ExternalLink className="h-4 w-4" />
-                        <span>Live Demo</span>
-                      </a>
-                    </Button>
+                    
+                    {project.hasDemo ? (
+                      <Button
+                        size="sm"
+                        className="gap-2 button-hover gradient-bg text-white border-none"
+                        asChild
+                      >
+                        <Link to={project.liveUrl}>
+                          <ExternalLink className="h-4 w-4" />
+                          <span>Live Demo</span>
+                        </Link>
+                      </Button>
+                    ) : (
+                      <Button
+                        size="sm"
+                        className="gap-2 button-hover gradient-bg text-white border-none"
+                        asChild
+                      >
+                        <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
+                          <ExternalLink className="h-4 w-4" />
+                          <span>Live Demo</span>
+                        </a>
+                      </Button>
+                    )}
                   </div>
                 </CardContent>
               </Card>
