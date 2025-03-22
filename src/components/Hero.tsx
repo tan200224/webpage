@@ -1,81 +1,64 @@
-
 import { ArrowDown, Github, Linkedin, Mail, Code, Terminal, BrainCircuit, Cpu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useEffect, useRef, useState } from "react";
-
 const MatrixRain = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  
   useEffect(() => {
     if (!canvasRef.current) return;
-    
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
-    
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-    
     const fontSize = 14;
     const columns = Math.floor(canvas.width / fontSize);
-    
     const drops: number[] = [];
     for (let i = 0; i < columns; i++) {
       drops[i] = Math.random() * -100;
     }
-    
     const matrix = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789@#$%^&*()*&^%+-/~{[|`]}";
-    
     const draw = () => {
       ctx.fillStyle = 'rgba(240, 247, 255, 0.05)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-      
       ctx.fillStyle = 'rgba(99, 102, 241, 0.8)';
       ctx.font = `${fontSize}px monospace`;
-      
       for (let i = 0; i < drops.length; i++) {
         const text = matrix[Math.floor(Math.random() * matrix.length)];
         ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-        
         if (drops[i] * fontSize > canvas.height && Math.random() > 0.98) {
           drops[i] = 0;
         }
-        
         drops[i]++;
       }
     };
-    
     const interval = setInterval(draw, 35);
-    
     return () => clearInterval(interval);
   }, []);
-  
   return <canvas ref={canvasRef} className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none" />;
 };
-
-const GlowingCircle = ({ size, delay, color }: { size: string; delay: string; color: string }) => (
-  <div 
-    className="absolute rounded-full animate-pulse-glow"
-    style={{ 
-      width: size, 
-      height: size, 
-      backgroundColor: color,
-      filter: `blur(${parseInt(size)/4}px)`,
-      opacity: 0.2,
-      animationDelay: delay
-    }}
-  />
-);
-
+const GlowingCircle = ({
+  size,
+  delay,
+  color
+}: {
+  size: string;
+  delay: string;
+  color: string;
+}) => <div className="absolute rounded-full animate-pulse-glow" style={{
+  width: size,
+  height: size,
+  backgroundColor: color,
+  filter: `blur(${parseInt(size) / 4}px)`,
+  opacity: 0.2,
+  animationDelay: delay
+}} />;
 const Hero = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [typedText, setTypedText] = useState("");
   const fullText = "Building intelligent software solutions";
   const heroRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
     setIsVisible(true);
-    
     let i = 0;
     const typeInterval = setInterval(() => {
       if (i < fullText.length) {
@@ -85,23 +68,17 @@ const Hero = () => {
         clearInterval(typeInterval);
       }
     }, 100);
-    
     return () => clearInterval(typeInterval);
   }, []);
-
   const scrollToNext = () => {
     const nextSection = document.querySelector('#experience');
     if (nextSection) {
-      nextSection.scrollIntoView({ behavior: 'smooth' });
+      nextSection.scrollIntoView({
+        behavior: 'smooth'
+      });
     }
   };
-
-  return (
-    <section 
-      id="home" 
-      ref={heroRef}
-      className="relative min-h-screen flex flex-col justify-center items-center overflow-hidden"
-    >
+  return <section id="home" ref={heroRef} className="relative min-h-screen flex flex-col justify-center items-center overflow-hidden">
       <MatrixRain />
       
       <div className="section-container flex flex-col items-center z-10">
@@ -111,56 +88,40 @@ const Hero = () => {
           <GlowingCircle size="250px" delay="4s" color="rgba(59, 130, 246, 0.5)" />
           
           <div className="overflow-hidden">
-            <p 
-              className={`font-mono text-primary text-sm sm:text-base mb-2 ${
-                isVisible ? 'animate-text-reveal' : 'opacity-0'
-              }`}
-              style={{ animationDelay: '0.2s' }}
-            >
+            <p className={`font-mono text-primary text-sm sm:text-base mb-2 ${isVisible ? 'animate-text-reveal' : 'opacity-0'}`} style={{
+            animationDelay: '0.2s'
+          }}>
               <Terminal className="inline-block w-4 h-4 mr-2" />
               Hello, I'm
             </p>
           </div>
           
           <div className="overflow-hidden mb-2">
-            <h1 
-              className={`text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight ${
-                isVisible ? 'animate-text-reveal' : 'opacity-0'
-              }`}
-              style={{ animationDelay: '0.4s' }}
-            >
-              <span className="ai-gradient-text">Zhuohao "Archie" Tan</span>
+            <h1 className={`text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight ${isVisible ? 'animate-text-reveal' : 'opacity-0'}`} style={{
+            animationDelay: '0.4s'
+          }}>
+              <span className="ai-gradient-text">Archie Tan</span>
             </h1>
           </div>
           
           <div className="overflow-hidden mb-4">
-            <h2 
-              className={`text-2xl sm:text-3xl md:text-4xl font-medium ${
-                isVisible ? 'animate-text-reveal' : 'opacity-0'
-              }`}
-              style={{ animationDelay: '0.5s' }}
-            >
+            <h2 className={`text-2xl sm:text-3xl md:text-4xl font-medium ${isVisible ? 'animate-text-reveal' : 'opacity-0'}`} style={{
+            animationDelay: '0.5s'
+          }}>
               AI & Software Engineer
             </h2>
           </div>
           
           <div className="overflow-hidden">
-            <p 
-              className={`font-mono text-lg text-foreground ${
-                isVisible ? '' : 'opacity-0'
-              }`}
-            >
+            <p className={`font-mono text-lg text-foreground ${isVisible ? '' : 'opacity-0'}`}>
               {typedText}<span className="animate-blink">|</span>
             </p>
           </div>
           
           <div className="overflow-hidden">
-            <p 
-              className={`text-muted-foreground mt-6 mb-8 max-w-2xl mx-auto px-4 sm:px-0 ${
-                isVisible ? 'animate-text-reveal' : 'opacity-0'
-              }`}
-              style={{ animationDelay: '0.6s' }}
-            >
+            <p className={`text-muted-foreground mt-6 mb-8 max-w-2xl mx-auto px-4 sm:px-0 ${isVisible ? 'animate-text-reveal' : 'opacity-0'}`} style={{
+            animationDelay: '0.6s'
+          }}>
               I'm a <span className="text-primary font-medium">researcher and developer</span> with a focus on 
               <span className="text-primary font-medium"> machine learning</span> and 
               <span className="text-primary font-medium"> software engineering</span>. 
@@ -169,54 +130,53 @@ const Hero = () => {
           </div>
           
           <div className="flex justify-center space-x-4 mb-8">
-            <div className={`ai-card p-3 floating ${isVisible ? 'animate-fade-up' : 'opacity-0'}`} style={{ animationDelay: '0.7s' }}>
+            <div className={`ai-card p-3 floating ${isVisible ? 'animate-fade-up' : 'opacity-0'}`} style={{
+            animationDelay: '0.7s'
+          }}>
               <Code className="h-5 w-5 text-primary" />
             </div>
-            <div className={`ai-card p-3 floating ${isVisible ? 'animate-fade-up' : 'opacity-0'}`} style={{ animationDelay: '0.8s', animationDuration: '3.5s' }}>
+            <div className={`ai-card p-3 floating ${isVisible ? 'animate-fade-up' : 'opacity-0'}`} style={{
+            animationDelay: '0.8s',
+            animationDuration: '3.5s'
+          }}>
               <BrainCircuit className="h-5 w-5 text-purple-500" />
             </div>
-            <div className={`ai-card p-3 floating ${isVisible ? 'animate-fade-up' : 'opacity-0'}`} style={{ animationDelay: '0.9s', animationDuration: '4s' }}>
+            <div className={`ai-card p-3 floating ${isVisible ? 'animate-fade-up' : 'opacity-0'}`} style={{
+            animationDelay: '0.9s',
+            animationDuration: '4s'
+          }}>
               <Cpu className="h-5 w-5 text-blue-500" />
             </div>
           </div>
           
-          <div 
-            className={`flex flex-col sm:flex-row items-center justify-center gap-4 ${
-              isVisible ? 'animate-fade-up' : 'opacity-0'
-            }`}
-            style={{ animationDelay: '0.8s' }}
-          >
-            <Button 
-              className="w-full sm:w-auto button-hover gradient-bg text-white border-none"
-              onClick={() => {
-                const projectsSection = document.querySelector('#projects');
-                if (projectsSection) {
-                  projectsSection.scrollIntoView({ behavior: 'smooth' });
-                }
-              }}
-            >
+          <div className={`flex flex-col sm:flex-row items-center justify-center gap-4 ${isVisible ? 'animate-fade-up' : 'opacity-0'}`} style={{
+          animationDelay: '0.8s'
+        }}>
+            <Button className="w-full sm:w-auto button-hover gradient-bg text-white border-none" onClick={() => {
+            const projectsSection = document.querySelector('#projects');
+            if (projectsSection) {
+              projectsSection.scrollIntoView({
+                behavior: 'smooth'
+              });
+            }
+          }}>
               View My Work
             </Button>
-            <Button 
-              variant="outline" 
-              className="w-full sm:w-auto button-hover"
-              onClick={() => {
-                const contactSection = document.querySelector('#contact');
-                if (contactSection) {
-                  contactSection.scrollIntoView({ behavior: 'smooth' });
-                }
-              }}
-            >
+            <Button variant="outline" className="w-full sm:w-auto button-hover" onClick={() => {
+            const contactSection = document.querySelector('#contact');
+            if (contactSection) {
+              contactSection.scrollIntoView({
+                behavior: 'smooth'
+              });
+            }
+          }}>
               Contact Me
             </Button>
           </div>
           
-          <div 
-            className={`flex justify-center mt-8 space-x-4 ${
-              isVisible ? 'animate-fade-up' : 'opacity-0'
-            }`}
-            style={{ animationDelay: '1s' }}
-          >
+          <div className={`flex justify-center mt-8 space-x-4 ${isVisible ? 'animate-fade-up' : 'opacity-0'}`} style={{
+          animationDelay: '1s'
+        }}>
             <a href="https://github.com/tan200224" className="text-muted-foreground hover:text-primary transition-colors" aria-label="GitHub">
               <Github size={20} />
             </a>
@@ -229,13 +189,7 @@ const Hero = () => {
           </div>
         </div>
         
-        <button 
-          onClick={scrollToNext}
-          className={`absolute bottom-10 animate-bounce border border-border rounded-full p-2 ${
-            isVisible ? 'opacity-80' : 'opacity-0'
-          } transition-opacity hover:opacity-100 z-10`}
-          aria-label="Scroll down"
-        >
+        <button onClick={scrollToNext} className={`absolute bottom-10 animate-bounce border border-border rounded-full p-2 ${isVisible ? 'opacity-80' : 'opacity-0'} transition-opacity hover:opacity-100 z-10`} aria-label="Scroll down">
           <ArrowDown size={18} className="text-primary" />
         </button>
       </div>
@@ -244,8 +198,6 @@ const Hero = () => {
         <div className="absolute top-0 left-0 h-96 w-96 bg-primary/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
         <div className="absolute bottom-0 right-0 h-96 w-96 bg-primary/5 rounded-full blur-3xl translate-x-1/3 translate-y-1/3"></div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default Hero;
