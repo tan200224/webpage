@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Loader2, BrainCircuit, ArrowLeft, Download } from "lucide-react";
 import { toast } from "sonner";
 import { Link } from "react-router-dom";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const SyntheticCTDemo = () => {
   const [mask, setMask] = useState<ImageData | null>(null);
@@ -18,13 +19,11 @@ const SyntheticCTDemo = () => {
 
   const handleMaskCreated = (maskData: ImageData) => {
     setMask(maskData);
-    // Reset generated image when mask changes
     setGeneratedImage(null);
   };
   
   const handleModelSelected = (model: ModelType) => {
     setSelectedModel(model);
-    // Reset generated image when model changes
     setGeneratedImage(null);
   };
 
@@ -37,10 +36,8 @@ const SyntheticCTDemo = () => {
     setIsGenerating(true);
     
     try {
-      // Simulate generation (in a real app, this would be an API call)
       await new Promise(resolve => setTimeout(resolve, 2000));
       
-      // Mock result - in a real app, this would come from the backend
       const placeholderImages = {
         vae: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=2670&auto=format&fit=crop",
         gan: "https://images.unsplash.com/photo-1530497610245-94d3c16cda28?q=80&w=2400&auto=format&fit=crop",
@@ -74,10 +71,19 @@ const SyntheticCTDemo = () => {
               <span>Back to portfolio</span>
             </Link>
             
-            <h1 className="text-3xl sm:text-4xl font-bold mb-2 relative inline-block">
-              <span className="relative z-10">Synthetic CT Scan Generator</span>
-              <span className="absolute left-0 bottom-0 w-full h-3 bg-primary/20 -z-10 transform -rotate-1"></span>
-            </h1>
+            <div className="flex flex-col md:flex-row md:items-center gap-4 mb-4">
+              <div className="flex items-center gap-3">
+                <Avatar className="h-12 w-12 border-2 border-primary">
+                  <AvatarImage src="/lovable-uploads/98a935cf-b6ac-485f-824f-58b13e6607c6.png" alt="Archie Tan" />
+                  <AvatarFallback>AT</AvatarFallback>
+                </Avatar>
+                
+                <h1 className="text-3xl sm:text-4xl font-bold relative inline-block">
+                  <span className="relative z-10">Synthetic CT Scan Generator</span>
+                  <span className="absolute left-0 bottom-0 w-full h-3 bg-primary/20 -z-10 transform -rotate-1"></span>
+                </h1>
+              </div>
+            </div>
             
             <p className="text-lg text-muted-foreground mb-4">
               Draw a segmentation mask and generate a realistic synthetic CT scan using different AI models.
@@ -151,7 +157,6 @@ const SyntheticCTDemo = () => {
                       size="sm"
                       disabled={isGenerating}
                       onClick={() => {
-                        // In a real app, this would download the actual generated image
                         const link = document.createElement('a');
                         link.href = generatedImage;
                         link.download = `synthetic-ct-scan-${selectedModel}.jpg`;

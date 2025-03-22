@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -6,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { ExternalLink, Github, Code, BrainCircuit, Cpu, Bot, Film } from "lucide-react";
 import { Link } from "react-router-dom";
 
-// Archie's actual projects
 const PROJECTS_DATA = [
   {
     id: 1,
@@ -125,7 +123,6 @@ const Projects = () => {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
                   
-                  {/* Animated particle effect on hover */}
                   <div className={`absolute inset-0 transition-opacity duration-300 ${hoveredCard === project.id ? 'opacity-30' : 'opacity-0'}`}>
                     <svg className="w-full h-full">
                       <defs>
