@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Helmet } from "react-helmet";
 import Navbar from "@/components/Navbar";
@@ -6,6 +5,7 @@ import Footer from "@/components/Footer";
 import DrawingCanvas from "@/components/DrawingCanvas";
 import ModelSelector, { ModelType } from "@/components/ModelSelector";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Loader2, BrainCircuit, ArrowLeft, Download } from "lucide-react";
 import { toast } from "sonner";
 import { Link } from "react-router-dom";
