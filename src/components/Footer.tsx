@@ -1,5 +1,5 @@
 
-import { ChevronUp, Github, Linkedin, Twitter, Instagram, Code, Terminal, BrainCircuit } from "lucide-react";
+import { ChevronUp, Github, Linkedin, Mail, Code, Terminal, BrainCircuit } from "lucide-react";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -26,7 +26,7 @@ const Footer = () => {
           <div className="text-center">
             <a href="#home" className="font-bold text-2xl tracking-tight inline-flex items-center gap-2">
               <Code className="h-6 w-6 text-primary" />
-              <span className="ai-gradient-text">Dev</span>Portfolio
+              <span className="ai-gradient-text">Archie</span>Tan
             </a>
             
             <div className="flex items-center justify-center gap-3 mt-3 mb-6">
@@ -36,14 +36,16 @@ const Footer = () => {
             </div>
             
             <p className="text-sm text-muted-foreground mb-8 max-w-lg mx-auto">
-              Building intelligent software solutions with a focus on performance, 
-              usability, and cutting-edge AI technologies.
+              Combining machine learning research with software engineering to create innovative solutions 
+              for real-world problems, with a focus on medical imaging and AI applications.
             </p>
             
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 max-w-md mx-auto mb-10">
+            <div className="grid grid-cols-3 gap-6 max-w-md mx-auto mb-10">
               <a 
-                href="#" 
+                href="https://github.com/tan200224" 
                 className="flex flex-col items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm">
                   <Github className="h-5 w-5" />
@@ -51,8 +53,10 @@ const Footer = () => {
                 <span className="text-xs">GitHub</span>
               </a>
               <a 
-                href="#" 
+                href="https://linkedin.com/in/zhuohaotan/" 
                 className="flex flex-col items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm">
                   <Linkedin className="h-5 w-5" />
@@ -60,29 +64,20 @@ const Footer = () => {
                 <span className="text-xs">LinkedIn</span>
               </a>
               <a 
-                href="#" 
+                href="mailto:tan200224@gmail.com" 
                 className="flex flex-col items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
               >
                 <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm">
-                  <Twitter className="h-5 w-5" />
+                  <Mail className="h-5 w-5" />
                 </div>
-                <span className="text-xs">Twitter</span>
-              </a>
-              <a 
-                href="#" 
-                className="flex flex-col items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
-              >
-                <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm">
-                  <Instagram className="h-5 w-5" />
-                </div>
-                <span className="text-xs">Instagram</span>
+                <span className="text-xs">Email</span>
               </a>
             </div>
             
             <div className="text-xs text-muted-foreground pt-6 border-t border-border">
-              <p>© {currentYear} All Rights Reserved</p>
+              <p>© {currentYear} Zhuohao "Archie" Tan | All Rights Reserved</p>
               <p className="mt-1 font-mono">
-                <span className="text-primary">const</span> passion = <span className="text-purple-500">'coding'</span>;
+                <span className="text-primary">const</span> passion = <span className="text-purple-500">'building intelligent systems'</span>;
               </p>
             </div>
           </div>

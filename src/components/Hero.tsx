@@ -1,5 +1,5 @@
 
-import { ArrowDown, Github, Linkedin, Mail, Code, Terminal, BrainCircuit } from "lucide-react";
+import { ArrowDown, Github, Linkedin, Mail, Code, Terminal, BrainCircuit, Cpu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useEffect, useRef, useState } from "react";
 
@@ -53,6 +53,20 @@ const MatrixRain = () => {
   return <canvas ref={canvasRef} className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none" />;
 };
 
+const GlowingCircle = ({ size, delay, color }: { size: string; delay: string; color: string }) => (
+  <div 
+    className="absolute rounded-full animate-pulse-glow"
+    style={{ 
+      width: size, 
+      height: size, 
+      backgroundColor: color,
+      filter: `blur(${parseInt(size)/4}px)`,
+      opacity: 0.2,
+      animationDelay: delay
+    }}
+  />
+);
+
 const Hero = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [typedText, setTypedText] = useState("");
@@ -91,7 +105,11 @@ const Hero = () => {
       <MatrixRain />
       
       <div className="section-container flex flex-col items-center z-10">
-        <div className="max-w-4xl mx-auto text-center">
+        <div className="max-w-4xl mx-auto text-center relative">
+          <GlowingCircle size="300px" delay="0s" color="rgba(99, 102, 241, 0.5)" />
+          <GlowingCircle size="200px" delay="2s" color="rgba(139, 92, 246, 0.5)" />
+          <GlowingCircle size="250px" delay="4s" color="rgba(59, 130, 246, 0.5)" />
+          
           <div className="overflow-hidden">
             <p 
               className={`font-mono text-primary text-sm sm:text-base mb-2 ${
@@ -100,19 +118,30 @@ const Hero = () => {
               style={{ animationDelay: '0.2s' }}
             >
               <Terminal className="inline-block w-4 h-4 mr-2" />
-              Hello, I'm a
+              Hello, I'm
             </p>
           </div>
           
-          <div className="overflow-hidden mb-4">
+          <div className="overflow-hidden mb-2">
             <h1 
-              className={`text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight ${
+              className={`text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight ${
                 isVisible ? 'animate-text-reveal' : 'opacity-0'
               }`}
               style={{ animationDelay: '0.4s' }}
             >
-              <span className="ai-gradient-text">Software Engineer</span>
+              <span className="ai-gradient-text">Zhuohao "Archie" Tan</span>
             </h1>
+          </div>
+          
+          <div className="overflow-hidden mb-4">
+            <h2 
+              className={`text-2xl sm:text-3xl md:text-4xl font-medium ${
+                isVisible ? 'animate-text-reveal' : 'opacity-0'
+              }`}
+              style={{ animationDelay: '0.5s' }}
+            >
+              AI & Software Engineer
+            </h2>
           </div>
           
           <div className="overflow-hidden">
@@ -132,10 +161,10 @@ const Hero = () => {
               }`}
               style={{ animationDelay: '0.6s' }}
             >
-              I build exceptional digital experiences with a focus on <span className="text-primary font-medium">AI-powered solutions</span>, 
-              <span className="text-primary font-medium"> intelligent algorithms</span>, and 
-              <span className="text-primary font-medium"> cutting-edge technologies</span>. 
-              Transforming complex challenges into elegant software is my passion.
+              I'm a <span className="text-primary font-medium">researcher and developer</span> with a focus on 
+              <span className="text-primary font-medium"> machine learning</span> and 
+              <span className="text-primary font-medium"> software engineering</span>. 
+              Specializing in pancreatic cancer diagnosis through AI models and synthetic data generation.
             </p>
           </div>
           
@@ -147,7 +176,7 @@ const Hero = () => {
               <BrainCircuit className="h-5 w-5 text-purple-500" />
             </div>
             <div className={`ai-card p-3 floating ${isVisible ? 'animate-fade-up' : 'opacity-0'}`} style={{ animationDelay: '0.9s', animationDuration: '4s' }}>
-              <Terminal className="h-5 w-5 text-blue-500" />
+              <Cpu className="h-5 w-5 text-blue-500" />
             </div>
           </div>
           
@@ -188,13 +217,13 @@ const Hero = () => {
             }`}
             style={{ animationDelay: '1s' }}
           >
-            <a href="#" className="text-muted-foreground hover:text-primary transition-colors" aria-label="GitHub">
+            <a href="https://github.com/tan200224" className="text-muted-foreground hover:text-primary transition-colors" aria-label="GitHub">
               <Github size={20} />
             </a>
-            <a href="#" className="text-muted-foreground hover:text-primary transition-colors" aria-label="LinkedIn">
+            <a href="https://linkedin.com/in/zhuohaotan/" className="text-muted-foreground hover:text-primary transition-colors" aria-label="LinkedIn">
               <Linkedin size={20} />
             </a>
-            <a href="#" className="text-muted-foreground hover:text-primary transition-colors" aria-label="Email">
+            <a href="mailto:tan200224@gmail.com" className="text-muted-foreground hover:text-primary transition-colors" aria-label="Email">
               <Mail size={20} />
             </a>
           </div>

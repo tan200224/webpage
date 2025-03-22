@@ -1,4 +1,3 @@
-
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import Experience from '@/components/Experience';
@@ -8,7 +7,7 @@ import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
 import { useEffect, useRef } from 'react';
 
-// Particle animation component
+// Particle animation component with improved interactivity
 const ParticleBackground = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -25,11 +24,29 @@ const ParticleBackground = () => {
       canvas.height = window.innerHeight;
     };
     
+    // Mouse position
+    let mouse = {
+      x: 0,
+      y: 0,
+      radius: 100
+    };
+    
+    // Update mouse position
+    const handleMouseMove = (e: MouseEvent) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    };
+    
+    window.addEventListener('mousemove', handleMouseMove);
+    
     // Create particles
     class Particle {
       x: number;
       y: number;
       size: number;
+      baseX: number;
+      baseY: number;
+      density: number;
       speedX: number;
       speedY: number;
       color: string;
@@ -37,16 +54,53 @@ const ParticleBackground = () => {
       constructor() {
         this.x = Math.random() * canvas.width;
         this.y = Math.random() * canvas.height;
+        this.baseX = this.x;
+        this.baseY = this.y;
         this.size = Math.random() * 3 + 1;
+        this.density = (Math.random() * 30) + 1;
         this.speedX = Math.random() * 1 - 0.5;
         this.speedY = Math.random() * 1 - 0.5;
         this.color = `rgba(99, 102, 241, ${Math.random() * 0.3 + 0.1})`;
       }
       
       update() {
-        this.x += this.speedX;
-        this.y += this.speedY;
+        // Mouse interaction
+        const dx = mouse.x - this.x;
+        const dy = mouse.y - this.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        const forceDirectionX = dx / distance;
+        const forceDirectionY = dy / distance;
         
+        // Max distance, past that the force will be 0
+        const maxDistance = mouse.radius;
+        let force = (maxDistance - distance) / maxDistance;
+        
+        // If we go below 0, set force to 0
+        if (force < 0) force = 0;
+        
+        const directionX = forceDirectionX * force * this.density;
+        const directionY = forceDirectionY * force * this.density;
+        
+        if (distance < mouse.radius) {
+          this.x -= directionX;
+          this.y -= directionY;
+        } else {
+          // Move particles back to their original position
+          if (this.x !== this.baseX) {
+            const dx = this.x - this.baseX;
+            this.x -= dx / 10;
+          }
+          if (this.y !== this.baseY) {
+            const dy = this.y - this.baseY;
+            this.y -= dy / 10;
+          }
+          
+          // Add some movement
+          this.x += this.speedX;
+          this.y += this.speedY;
+        }
+        
+        // Keep particles within canvas
         if (this.x > canvas.width) this.x = 0;
         if (this.x < 0) this.x = canvas.width;
         if (this.y > canvas.height) this.y = 0;
@@ -63,7 +117,7 @@ const ParticleBackground = () => {
     
     // Initialize particles
     let particles: Particle[] = [];
-    const particleCount = Math.min(window.innerWidth / 10, 100);
+    const particleCount = Math.min(window.innerWidth / 10, 120);
     
     const init = () => {
       particles = [];
@@ -119,6 +173,7 @@ const ParticleBackground = () => {
     
     return () => {
       window.removeEventListener('resize', setCanvasSize);
+      window.removeEventListener('mousemove', handleMouseMove);
     };
   }, []);
   
@@ -133,7 +188,7 @@ const ParticleBackground = () => {
 const Index = () => {
   useEffect(() => {
     // Set page title
-    document.title = 'AI & Software Engineer Portfolio';
+    document.title = 'Archie Tan | AI & Software Engineer Portfolio';
     
     // Apply smooth scrolling behavior to the whole document
     document.documentElement.classList.add('smooth-scroll');
