@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Helmet } from "react-helmet";
 import Navbar from "@/components/Navbar";
@@ -65,7 +64,7 @@ const SyntheticCTDemo = () => {
       
       <Navbar />
       
-      <main className="flex-grow py-10 px-4 sm:px-6">
+      <main className="flex-grow pt-20 pb-10 px-4 sm:px-6">
         <div className="container mx-auto max-w-5xl">
           <div className="mb-8">
             <div className="flex flex-col md:flex-row md:items-center gap-4 mb-4">

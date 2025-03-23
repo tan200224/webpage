@@ -89,122 +89,141 @@ const Hero = () => {
       <MatrixRain />
       
       <div className="section-container flex flex-col items-center z-10">
-        <div className="max-w-4xl mx-auto text-center relative">
-          <GlowingCircle size="300px" delay="0s" color="rgba(99, 102, 241, 0.5)" />
-          <GlowingCircle size="200px" delay="2s" color="rgba(139, 92, 246, 0.5)" />
-          <GlowingCircle size="250px" delay="4s" color="rgba(59, 130, 246, 0.5)" />
-          
-          <div className="flex flex-col items-center mb-8">
-            <Avatar className={`w-32 h-32 border-4 border-background shadow-xl mb-6 ${isVisible ? 'animate-fade-up' : 'opacity-0'}`}
-              style={{ animationDelay: '0.2s' }}>
-              <AvatarImage src="/lovable-uploads/4da5e4b9-fb36-4cda-b475-591f1702c4db.png" alt="Archie Tan" />
-              <AvatarFallback>AT</AvatarFallback>
-            </Avatar>
-          
-            <div className="overflow-hidden">
-              <p className={`font-mono text-primary text-sm sm:text-base mb-2 ${isVisible ? 'animate-text-reveal' : 'opacity-0'}`} style={{
-              animationDelay: '0.2s'
-            }}>
-                <Terminal className="inline-block w-4 h-4 mr-2" />
-                Hello, I'm
-              </p>
-            </div>
-            
-            <div className="overflow-hidden mb-2">
-              <h1 className={`text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight ${isVisible ? 'animate-text-reveal' : 'opacity-0'}`} style={{
-              animationDelay: '0.4s'
-            }}>
-                <span className="ai-gradient-text">Archie Tan</span>
-              </h1>
-            </div>
-            
-            <div className="overflow-hidden mb-4">
-              <h2 className={`text-2xl sm:text-3xl md:text-4xl font-medium ${isVisible ? 'animate-text-reveal' : 'opacity-0'}`} style={{
-              animationDelay: '0.5s'
-            }}>
-                AI & Software Engineer
-              </h2>
-            </div>
-            
-            <div className="overflow-hidden">
-              <p className={`font-mono text-lg text-foreground ${isVisible ? '' : 'opacity-0'}`}>
-                {typedText}<span className="animate-blink">|</span>
-              </p>
-            </div>
-            
-            <div className="overflow-hidden">
-              <p className={`text-muted-foreground mt-6 mb-8 max-w-2xl mx-auto px-4 sm:px-0 ${isVisible ? 'animate-text-reveal' : 'opacity-0'}`} style={{
-              animationDelay: '0.6s'
-            }}>
-                I'm a <span className="text-primary font-medium">researcher and developer</span> with a focus on 
-                <span className="text-primary font-medium"> machine learning</span> and 
-                <span className="text-primary font-medium"> software engineering</span>. 
-                Specializing in pancreatic cancer diagnosis through AI models and synthetic data generation.
-              </p>
-            </div>
+        <div className="max-w-5xl mx-auto w-full relative z-10">
+          {/* Background glow effects */}
+          <div className="absolute -z-10 inset-0 flex justify-center items-center opacity-70">
+            <GlowingCircle size="350px" delay="0s" color="rgba(99, 102, 241, 0.5)" />
+            <GlowingCircle size="250px" delay="2s" color="rgba(139, 92, 246, 0.5)" />
+            <GlowingCircle size="300px" delay="4s" color="rgba(59, 130, 246, 0.5)" />
           </div>
           
-          <div className="flex justify-center space-x-4 mb-8">
-            <div className={`ai-card p-3 floating ${isVisible ? 'animate-fade-up' : 'opacity-0'}`} style={{
-            animationDelay: '0.7s'
-          }}>
-              <Code className="h-5 w-5 text-primary" />
+          {/* Main content */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center px-4">
+            {/* Left side: Profile image with fancy border */}
+            <div className={`flex justify-center md:justify-end ${isVisible ? 'animate-fade-up' : 'opacity-0'}`}
+                style={{ animationDelay: '0.2s' }}>
+              <div className="relative">
+                {/* Circular gradient border */}
+                <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary via-purple-500 to-blue-500 
+                     blur-sm p-1 -m-1 animate-rotate-slow"></div>
+                
+                {/* Profile image */}
+                <div className="relative rounded-full p-1 bg-background overflow-hidden">
+                  <Avatar className="w-52 h-52 md:w-72 md:h-72 border-2 border-background">
+                    <AvatarImage 
+                      src="/lovable-uploads/4da5e4b9-fb36-4cda-b475-591f1702c4db.png" 
+                      alt="Archie Tan"
+                      className="object-cover" />
+                    <AvatarFallback>AT</AvatarFallback>
+                  </Avatar>
+                  
+                  {/* Tech icons floating around the profile */}
+                  <div className="absolute -top-3 -right-3 ai-card p-3 floating animate-float-slow">
+                    <Code className="h-6 w-6 text-primary" />
+                  </div>
+                  <div className="absolute -bottom-3 -right-3 ai-card p-3 floating" 
+                       style={{ animationDuration: '4s', animationDelay: '1s' }}>
+                    <BrainCircuit className="h-6 w-6 text-purple-500" />
+                  </div>
+                  <div className="absolute -bottom-3 -left-3 ai-card p-3 floating" 
+                       style={{ animationDuration: '3.5s', animationDelay: '0.5s' }}>
+                    <Cpu className="h-6 w-6 text-blue-500" />
+                  </div>
+                </div>
+              </div>
             </div>
-            <div className={`ai-card p-3 floating ${isVisible ? 'animate-fade-up' : 'opacity-0'}`} style={{
-            animationDelay: '0.8s',
-            animationDuration: '3.5s'
-          }}>
-              <BrainCircuit className="h-5 w-5 text-purple-500" />
+            
+            {/* Right side: Text content */}
+            <div className="text-center md:text-left">
+              <div className="overflow-hidden mb-1">
+                <p className={`font-mono text-primary text-sm sm:text-base ${isVisible ? 'animate-text-reveal' : 'opacity-0'}`} 
+                   style={{ animationDelay: '0.3s' }}>
+                  <Terminal className="inline-block w-4 h-4 mr-2" />
+                  Hello, I'm
+                </p>
+              </div>
+              
+              <div className="overflow-hidden mb-2">
+                <h1 className={`text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight ${isVisible ? 'animate-text-reveal' : 'opacity-0'}`}
+                    style={{ animationDelay: '0.5s' }}>
+                  <span className="ai-gradient-text">Archie Tan</span>
+                </h1>
+              </div>
+              
+              <div className="overflow-hidden mb-4">
+                <h2 className={`text-2xl sm:text-3xl md:text-4xl font-medium ${isVisible ? 'animate-text-reveal' : 'opacity-0'}`}
+                    style={{ animationDelay: '0.6s' }}>
+                  AI & Software Engineer
+                </h2>
+              </div>
+              
+              <div className="overflow-hidden mb-3">
+                <p className={`font-mono text-lg text-foreground ${isVisible ? '' : 'opacity-0'}`}>
+                  {typedText}<span className="animate-blink">|</span>
+                </p>
+              </div>
+              
+              <div className="overflow-hidden mb-6">
+                <p className={`text-muted-foreground mt-4 max-w-lg ${isVisible ? 'animate-text-reveal' : 'opacity-0'}`}
+                   style={{ animationDelay: '0.8s' }}>
+                  I'm a <span className="text-primary font-medium">researcher and developer</span> with a focus on 
+                  <span className="text-primary font-medium"> machine learning</span> and 
+                  <span className="text-primary font-medium"> software engineering</span>. 
+                  Specializing in pancreatic cancer diagnosis through AI models and synthetic data generation.
+                </p>
+              </div>
+              
+              <div className={`flex flex-col sm:flex-row items-center md:items-start justify-center md:justify-start gap-4 ${isVisible ? 'animate-fade-up' : 'opacity-0'}`}
+                   style={{ animationDelay: '1s' }}>
+                <Button className="w-full sm:w-auto button-hover gradient-bg text-white border-none" 
+                        onClick={() => {
+                          const projectsSection = document.querySelector('#projects');
+                          if (projectsSection) {
+                            projectsSection.scrollIntoView({
+                              behavior: 'smooth'
+                            });
+                          }
+                        }}>
+                  View My Work
+                </Button>
+                <Button variant="outline" className="w-full sm:w-auto button-hover" 
+                        onClick={() => {
+                          const contactSection = document.querySelector('#contact');
+                          if (contactSection) {
+                            contactSection.scrollIntoView({
+                              behavior: 'smooth'
+                            });
+                          }
+                        }}>
+                  Contact Me
+                </Button>
+              </div>
+              
+              <div className={`flex justify-center md:justify-start mt-6 space-x-4 ${isVisible ? 'animate-fade-up' : 'opacity-0'}`}
+                   style={{ animationDelay: '1.2s' }}>
+                <a href="https://github.com/tan200224" 
+                   className="text-muted-foreground hover:text-primary transition-colors" 
+                   aria-label="GitHub">
+                  <Github size={20} />
+                </a>
+                <a href="https://linkedin.com/in/zhuohaotan/" 
+                   className="text-muted-foreground hover:text-primary transition-colors" 
+                   aria-label="LinkedIn">
+                  <Linkedin size={20} />
+                </a>
+                <a href="mailto:tan200224@gmail.com" 
+                   className="text-muted-foreground hover:text-primary transition-colors" 
+                   aria-label="Email">
+                  <Mail size={20} />
+                </a>
+              </div>
             </div>
-            <div className={`ai-card p-3 floating ${isVisible ? 'animate-fade-up' : 'opacity-0'}`} style={{
-            animationDelay: '0.9s',
-            animationDuration: '4s'
-          }}>
-              <Cpu className="h-5 w-5 text-blue-500" />
-            </div>
-          </div>
-          
-          <div className={`flex flex-col sm:flex-row items-center justify-center gap-4 ${isVisible ? 'animate-fade-up' : 'opacity-0'}`} style={{
-          animationDelay: '0.8s'
-        }}>
-            <Button className="w-full sm:w-auto button-hover gradient-bg text-white border-none" onClick={() => {
-            const projectsSection = document.querySelector('#projects');
-            if (projectsSection) {
-              projectsSection.scrollIntoView({
-                behavior: 'smooth'
-              });
-            }
-          }}>
-              View My Work
-            </Button>
-            <Button variant="outline" className="w-full sm:w-auto button-hover" onClick={() => {
-            const contactSection = document.querySelector('#contact');
-            if (contactSection) {
-              contactSection.scrollIntoView({
-                behavior: 'smooth'
-              });
-            }
-          }}>
-              Contact Me
-            </Button>
-          </div>
-          
-          <div className={`flex justify-center mt-8 space-x-4 ${isVisible ? 'animate-fade-up' : 'opacity-0'}`} style={{
-          animationDelay: '1s'
-        }}>
-            <a href="https://github.com/tan200224" className="text-muted-foreground hover:text-primary transition-colors" aria-label="GitHub">
-              <Github size={20} />
-            </a>
-            <a href="https://linkedin.com/in/zhuohaotan/" className="text-muted-foreground hover:text-primary transition-colors" aria-label="LinkedIn">
-              <Linkedin size={20} />
-            </a>
-            <a href="mailto:tan200224@gmail.com" className="text-muted-foreground hover:text-primary transition-colors" aria-label="Email">
-              <Mail size={20} />
-            </a>
           </div>
         </div>
         
-        <button onClick={scrollToNext} className={`absolute bottom-10 animate-bounce border border-border rounded-full p-2 ${isVisible ? 'opacity-80' : 'opacity-0'} transition-opacity hover:opacity-100 z-10`} aria-label="Scroll down">
+        <button onClick={scrollToNext} 
+                className={`absolute bottom-10 animate-bounce border border-border rounded-full p-2 ${isVisible ? 'opacity-80' : 'opacity-0'} transition-opacity hover:opacity-100 z-10`} 
+                aria-label="Scroll down">
           <ArrowDown size={18} className="text-primary" />
         </button>
       </div>

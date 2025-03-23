@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
@@ -42,6 +41,20 @@ const Navbar = () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
+
+  // Handle hash navigation when the component first mounts or when location changes
+  useEffect(() => {
+    // Check if we're on the main page and if there's a hash in the URL
+    if (isMainPage && location.hash) {
+      // Wait a moment for the page to fully render
+      setTimeout(() => {
+        const element = document.querySelector(location.hash);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 300); // Slight delay to ensure page is rendered
+    }
+  }, [isMainPage, location]);
 
   const handleLinkClick = (href: string) => {
     setMobileMenuOpen(false);
