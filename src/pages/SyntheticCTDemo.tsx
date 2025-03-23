@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Helmet } from "react-helmet";
 import Navbar from "@/components/Navbar";
@@ -66,7 +67,7 @@ const SyntheticCTDemo = () => {
       <main className="flex-grow py-10 px-4 sm:px-6">
         <div className="container mx-auto max-w-5xl">
           <div className="mb-8">
-            <Link to="/projects" className="text-primary hover:underline flex items-center gap-1 mb-4">
+            <Link to="/" className="text-primary hover:underline flex items-center gap-1 mb-4">
               <ArrowLeft className="h-4 w-4" />
               <span>Back to portfolio</span>
             </Link>
