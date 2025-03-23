@@ -1,9 +1,10 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ExternalLink, Github, Code, BrainCircuit, Cpu, Bot, Film } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const PROJECTS_DATA = [
   {
@@ -53,6 +54,7 @@ const Projects = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -73,6 +75,11 @@ const Projects = () => {
       observer.disconnect();
     };
   }, []);
+  
+  const handleDemoClick = (url: string) => {
+    navigate(url);
+    window.scrollTo(0, 0);
+  };
 
   return (
     <section id="projects" ref={sectionRef} className="py-20 relative overflow-hidden">
@@ -164,12 +171,10 @@ const Projects = () => {
                       <Button
                         size="sm"
                         className="gap-2 button-hover gradient-bg text-white border-none"
-                        asChild
+                        onClick={() => handleDemoClick(project.liveUrl)}
                       >
-                        <Link to={project.liveUrl}>
-                          <ExternalLink className="h-4 w-4" />
-                          <span>Live Demo</span>
-                        </Link>
+                        <ExternalLink className="h-4 w-4" />
+                        <span>Live Demo</span>
                       </Button>
                     ) : (
                       <Button

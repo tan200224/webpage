@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, BrainCircuit, ArrowLeft, Download } from "lucide-react";
 import { toast } from "sonner";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const SyntheticCTDemo = () => {
@@ -17,6 +17,7 @@ const SyntheticCTDemo = () => {
   const [selectedModel, setSelectedModel] = useState<ModelType>("vae");
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
+  const navigate = useNavigate();
 
   const handleMaskCreated = (maskData: ImageData) => {
     setMask(maskData);
@@ -55,6 +56,10 @@ const SyntheticCTDemo = () => {
     }
   };
 
+  const goBackToPortfolio = () => {
+    navigate("/");
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <Helmet>
@@ -67,10 +72,13 @@ const SyntheticCTDemo = () => {
       <main className="flex-grow py-10 px-4 sm:px-6">
         <div className="container mx-auto max-w-5xl">
           <div className="mb-8">
-            <Link to="/" className="text-primary hover:underline flex items-center gap-1 mb-4">
+            <button 
+              onClick={goBackToPortfolio} 
+              className="text-primary hover:underline flex items-center gap-1 mb-4"
+            >
               <ArrowLeft className="h-4 w-4" />
               <span>Back to portfolio</span>
-            </Link>
+            </button>
             
             <div className="flex flex-col md:flex-row md:items-center gap-4 mb-4">
               <div className="flex items-center gap-3">

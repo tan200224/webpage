@@ -1,6 +1,8 @@
 import { ArrowDown, Github, Linkedin, Mail, Code, Terminal, BrainCircuit, Cpu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useEffect, useRef, useState } from "react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
 const MatrixRain = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   useEffect(() => {
@@ -36,6 +38,7 @@ const MatrixRain = () => {
   }, []);
   return <canvas ref={canvasRef} className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none" />;
 };
+
 const GlowingCircle = ({
   size,
   delay,
@@ -52,11 +55,13 @@ const GlowingCircle = ({
   opacity: 0.2,
   animationDelay: delay
 }} />;
+
 const Hero = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [typedText, setTypedText] = useState("");
   const fullText = "Building intelligent software solutions";
   const heroRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     setIsVisible(true);
     let i = 0;
@@ -70,6 +75,7 @@ const Hero = () => {
     }, 100);
     return () => clearInterval(typeInterval);
   }, []);
+
   const scrollToNext = () => {
     const nextSection = document.querySelector('#experience');
     if (nextSection) {
@@ -78,6 +84,7 @@ const Hero = () => {
       });
     }
   };
+
   return <section id="home" ref={heroRef} className="relative min-h-screen flex flex-col justify-center items-center overflow-hidden">
       <MatrixRain />
       
@@ -87,46 +94,54 @@ const Hero = () => {
           <GlowingCircle size="200px" delay="2s" color="rgba(139, 92, 246, 0.5)" />
           <GlowingCircle size="250px" delay="4s" color="rgba(59, 130, 246, 0.5)" />
           
-          <div className="overflow-hidden">
-            <p className={`font-mono text-primary text-sm sm:text-base mb-2 ${isVisible ? 'animate-text-reveal' : 'opacity-0'}`} style={{
-            animationDelay: '0.2s'
-          }}>
-              <Terminal className="inline-block w-4 h-4 mr-2" />
-              Hello, I'm
-            </p>
-          </div>
+          <div className="flex flex-col items-center mb-8">
+            <Avatar className={`w-32 h-32 border-4 border-background shadow-xl mb-6 ${isVisible ? 'animate-fade-up' : 'opacity-0'}`}
+              style={{ animationDelay: '0.2s' }}>
+              <AvatarImage src="/lovable-uploads/4da5e4b9-fb36-4cda-b475-591f1702c4db.png" alt="Archie Tan" />
+              <AvatarFallback>AT</AvatarFallback>
+            </Avatar>
           
-          <div className="overflow-hidden mb-2">
-            <h1 className={`text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight ${isVisible ? 'animate-text-reveal' : 'opacity-0'}`} style={{
-            animationDelay: '0.4s'
-          }}>
-              <span className="ai-gradient-text">Archie Tan</span>
-            </h1>
-          </div>
-          
-          <div className="overflow-hidden mb-4">
-            <h2 className={`text-2xl sm:text-3xl md:text-4xl font-medium ${isVisible ? 'animate-text-reveal' : 'opacity-0'}`} style={{
-            animationDelay: '0.5s'
-          }}>
-              AI & Software Engineer
-            </h2>
-          </div>
-          
-          <div className="overflow-hidden">
-            <p className={`font-mono text-lg text-foreground ${isVisible ? '' : 'opacity-0'}`}>
-              {typedText}<span className="animate-blink">|</span>
-            </p>
-          </div>
-          
-          <div className="overflow-hidden">
-            <p className={`text-muted-foreground mt-6 mb-8 max-w-2xl mx-auto px-4 sm:px-0 ${isVisible ? 'animate-text-reveal' : 'opacity-0'}`} style={{
-            animationDelay: '0.6s'
-          }}>
-              I'm a <span className="text-primary font-medium">researcher and developer</span> with a focus on 
-              <span className="text-primary font-medium"> machine learning</span> and 
-              <span className="text-primary font-medium"> software engineering</span>. 
-              Specializing in pancreatic cancer diagnosis through AI models and synthetic data generation.
-            </p>
+            <div className="overflow-hidden">
+              <p className={`font-mono text-primary text-sm sm:text-base mb-2 ${isVisible ? 'animate-text-reveal' : 'opacity-0'}`} style={{
+              animationDelay: '0.2s'
+            }}>
+                <Terminal className="inline-block w-4 h-4 mr-2" />
+                Hello, I'm
+              </p>
+            </div>
+            
+            <div className="overflow-hidden mb-2">
+              <h1 className={`text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight ${isVisible ? 'animate-text-reveal' : 'opacity-0'}`} style={{
+              animationDelay: '0.4s'
+            }}>
+                <span className="ai-gradient-text">Archie Tan</span>
+              </h1>
+            </div>
+            
+            <div className="overflow-hidden mb-4">
+              <h2 className={`text-2xl sm:text-3xl md:text-4xl font-medium ${isVisible ? 'animate-text-reveal' : 'opacity-0'}`} style={{
+              animationDelay: '0.5s'
+            }}>
+                AI & Software Engineer
+              </h2>
+            </div>
+            
+            <div className="overflow-hidden">
+              <p className={`font-mono text-lg text-foreground ${isVisible ? '' : 'opacity-0'}`}>
+                {typedText}<span className="animate-blink">|</span>
+              </p>
+            </div>
+            
+            <div className="overflow-hidden">
+              <p className={`text-muted-foreground mt-6 mb-8 max-w-2xl mx-auto px-4 sm:px-0 ${isVisible ? 'animate-text-reveal' : 'opacity-0'}`} style={{
+              animationDelay: '0.6s'
+            }}>
+                I'm a <span className="text-primary font-medium">researcher and developer</span> with a focus on 
+                <span className="text-primary font-medium"> machine learning</span> and 
+                <span className="text-primary font-medium"> software engineering</span>. 
+                Specializing in pancreatic cancer diagnosis through AI models and synthetic data generation.
+              </p>
+            </div>
           </div>
           
           <div className="flex justify-center space-x-4 mb-8">
@@ -200,4 +215,5 @@ const Hero = () => {
       </div>
     </section>;
 };
+
 export default Hero;
