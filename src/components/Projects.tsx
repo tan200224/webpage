@@ -14,7 +14,7 @@ const PROJECTS_DATA = [
     image: "https://images.unsplash.com/photo-1607798748738-b15c40d33d57?q=80&w=2670&auto=format&fit=crop",
     technologies: ["PyTorch", "TorchVision", "Python", "Data Augmentation", "3D Imaging"],
     liveUrl: "#",
-    githubUrl: "https://github.com/tan200224",
+    githubUrl: "https://github.com/tan200224/Research_Blog",
     icon: <BrainCircuit className="h-10 w-10 text-primary" />
   },
   {
@@ -24,7 +24,7 @@ const PROJECTS_DATA = [
     image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=2670&auto=format&fit=crop",
     technologies: ["PyTorch", "Generative AI", "3D Modeling", "Medical Imaging", "Data Synthesis"],
     liveUrl: "/synthetic-ct-demo",
-    githubUrl: "https://github.com/tan200224",
+    githubUrl: "https://github.com/tan200224/Research_Blog",
     icon: <Cpu className="h-10 w-10 text-purple-500" />,
     hasDemo: true
   },
@@ -34,8 +34,8 @@ const PROJECTS_DATA = [
     description: "AI-powered chatbot assistant for academic courses utilizing OpenAI API for NLP, trained on course materials while preventing academic dishonesty.",
     image: "https://images.unsplash.com/photo-1655721530791-65e945810047?q=80&w=2670&auto=format&fit=crop",
     technologies: ["OpenAI API", "NLP", "Python", "Fine-tuning", "Academic Ethics"],
-    liveUrl: "#",
-    githubUrl: "https://github.com/tan200224",
+    liveUrl: "https://drive.google.com/file/d/1v0mN920ChuhSzbn-3CTaxQaV9ebfnEud/view?usp=drive_link",
+    githubUrl: "#",
     icon: <Bot className="h-10 w-10 text-blue-500" />
   },
   {
@@ -44,8 +44,8 @@ const PROJECTS_DATA = [
     description: "Mobile app that accesses MovieDatabase API, enabling users to browse movies, view details, and watch trailers with optimized performance.",
     image: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=2670&auto=format&fit=crop",
     technologies: ["Android", "Async HTTP", "Glide", "API Integration", "Java"],
-    liveUrl: "#",
-    githubUrl: "https://github.com/tan200224",
+    liveUrl: "https://drive.google.com/file/d/1kxaEK7cI3u-g3_Q93S-ETFQqUNQ05H2Z/view?usp=drive_link",
+    githubUrl: "https://github.com/tan200224/Movie-Trailer-Viewer/",
     icon: <Film className="h-10 w-10 text-green-500" />
   }
 ];
