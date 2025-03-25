@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vae-backend"
+version = "0.1.0"
+description = "Backend for the VAE model serving API"
+requires-python = ">=3.8"
+dependencies = [
+    "Flask==2.2.3",
+    "Flask-CORS==3.0.10",
+    "torch==2.2.2",
+    "torchvision==0.17.2",
+    "numpy==1.24.2",
+    "Pillow==9.5.0",
+    "python-dotenv==1.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "black",
+    "isort",
+    "pytest",
+]
+
+[tool.black]
+line-length = 88
+target-version = ["py38"]
+
+[tool.isort]
+profile = "black"
+line_length = 88 
