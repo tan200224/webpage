@@ -11,9 +11,12 @@ import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
+<<<<<<< HEAD
 // API URL - adjust this based on your deployment configuration
 const API_URL = "http://localhost:5000";
 
+=======
+>>>>>>> 27b981b5ab07179fdf576d9b8bf5fa2ae5f3fe7a
 const SyntheticCTDemo = () => {
   const [mask, setMask] = useState<ImageData | null>(null);
   const [selectedModel, setSelectedModel] = useState<ModelType>("vae");
@@ -40,6 +43,7 @@ const SyntheticCTDemo = () => {
     setIsGenerating(true);
     
     try {
+<<<<<<< HEAD
       // First check if the backend is available
       try {
         const healthResponse = await fetch(`${API_URL}/api/health`, {
@@ -100,6 +104,10 @@ const SyntheticCTDemo = () => {
       toast.error(`Failed to generate CT Scan: ${error instanceof Error ? error.message : 'Unknown error'}`);
       
       // Fallback to placeholders for demo purposes only
+=======
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+>>>>>>> 27b981b5ab07179fdf576d9b8bf5fa2ae5f3fe7a
       const placeholderImages = {
         vae: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=2670&auto=format&fit=crop",
         gan: "https://images.unsplash.com/photo-1530497610245-94d3c16cda28?q=80&w=2400&auto=format&fit=crop",
@@ -107,7 +115,14 @@ const SyntheticCTDemo = () => {
       };
       
       setGeneratedImage(placeholderImages[selectedModel]);
+<<<<<<< HEAD
       toast.info("Using placeholder image for demo purposes");
+=======
+      toast.success(`CT Scan generated using ${selectedModel.toUpperCase()} model`);
+    } catch (error) {
+      toast.error("Failed to generate CT Scan. Please try again.");
+      console.error(error);
+>>>>>>> 27b981b5ab07179fdf576d9b8bf5fa2ae5f3fe7a
     } finally {
       setIsGenerating(false);
     }
