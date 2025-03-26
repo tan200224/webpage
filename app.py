@@ -8,13 +8,14 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from matplotlib import pyplot as plt
 import torch.nn as nn
-
+import torchvision.transforms.functional as TF
 
 app = Flask(__name__)
 CORS(app)
 
 # Define model paths
-ORIGINAL_MODEL_PATH = os.path.join('public', 'models', 'vae.pth')
+ORIGINAL_MODEL_PATH = r"D:\LumenResearchDataBase\Project\selfCoding\mask2pic_64model_47.pt"
+#os.path.join('public', 'models', 'vae.pth')
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 
@@ -50,7 +51,7 @@ class VAE(nn.Module):
     def __init__(self):
         super(VAE, self).__init__()
         
-        base = 128
+        base = 64
         
         self.encoder = nn.Sequential(
             Conv(4, base, 3, stride=2, padding=1),
@@ -104,8 +105,9 @@ class VAE(nn.Module):
         return self.decode(z), mu, logvar
 
 
+
 # Initialize the model
-model = None
+model = VAE().cuda()
 model_info = {
     'source': None,
     'type': None
@@ -122,10 +124,8 @@ except (ImportError, AttributeError):
 # Try to load the model, with fallbacks
 try:
     # First, try to load the original model
-    checkpoint = torch.load(ORIGINAL_MODEL_PATH, map_location=device)
-    model = VAE()
+    checkpoint = torch.load(ORIGINAL_MODEL_PATH)
     model.load_state_dict(checkpoint['model_state_dict'])
-    model.eval()
 
     if model is not None:
         model_info['source'] = 'original'
@@ -134,8 +134,7 @@ try:
     # If we still don't have a model, create one on the fly
     if model is None:
         print("Creating a new model instance...")
-        model = VAE()
-        model.eval()
+        model = VAE().to(device)
         model_info['source'] = 'generated'
         model_info['type'] = 'empty_model'
     
@@ -145,7 +144,7 @@ try:
     with torch.no_grad():
         try:
             mu, sigma = model.encode(test_input)
-            z = mu + sigma * 0.05
+            z = mu + sigma
             test_output = model.decode(z)
             if isinstance(test_output, tuple):
                 print(f"Model output is a tuple with shapes: {[o.shape for o in test_output]}")
@@ -156,7 +155,6 @@ try:
             print(f"Model inference test failed: {e}")
             print("Creating a new model as a fallback...")
             model = VAE()
-            model.eval()
             model_info['source'] = 'generated'
             model_info['type'] = 'empty_model'
     
@@ -164,7 +162,7 @@ except Exception as e:
     print(f"Error during model loading process: {e}")
     # Create an empty model as a last resort
     try:
-        model = VAE()
+        model = VAE().to(device)
         model.eval()
         model_info['source'] = 'generated'
         model_info['type'] = 'empty_model'
@@ -183,8 +181,11 @@ def preprocess_image(image_data):
         image_bytes = base64.b64decode(image_data)
         
         # Open as PIL Image
-        image = Image.open(io.BytesIO(image_bytes))     
-        image.show()
+        image = Image.open(io.BytesIO(image_bytes))
+        
+        # Show the image (for debugging)
+        # Uncomment the line below to display the image
+        # image.show()
         
         # Convert to grayscale if the image is not already
         if image.mode != 'L':
@@ -193,18 +194,15 @@ def preprocess_image(image_data):
         # Resize to 256x256 if needed
         if image.size != (256, 256):
             image = image.resize((256, 256))    
-
-
         
         # Convert to numpy array
         image_np = np.array(image)
-        
-        # Normalize to [0, 1]
-        image_np = image_np / 255.0
-        
+
         # Convert to tensor
         tensor = torch.from_numpy(image_np).float().unsqueeze(0).unsqueeze(0)
-        tensor = torch.cat((tensor, tensor, tensor, tensor), dim=1)
+        blank = torch.zeros((1, 1, 256, 256))
+        tensor = torch.cat((blank, blank, tensor, tensor), dim=1)
+        plt.imsave('output_image1.png', tensor[0, 0].detach().cpu().numpy(), cmap='gray')
         
         return tensor.to(device)
     except Exception as e:
@@ -218,29 +216,15 @@ def tensor_to_base64(tensor):
         # If tensor is a tuple, get the first element
         if isinstance(tensor, tuple):
             tensor = tensor[0]
-        
-        # Make sure we're working with the tensor on CPU
-        tensor = tensor.cpu().detach()
-        
-        # Get the first channel (or average the channels if needed)
-        if tensor.shape[1] == 4:  # If it has 4 channels
-            # Use the first channel for simplicity
-            image_tensor = tensor[:, 0:1, :, :]
-        else:
-            image_tensor = tensor
-        
+    
         # Remove batch dimension and convert to numpy
-        image_np = image_tensor.squeeze(0).squeeze(0).numpy()
-        
-        # Scale to [0, 255] and convert to uint8
-        image_np = (image_np * 255).clip(0, 255).astype(np.uint8)
-        
-        # Create a PIL Image directly
-        pil_img = Image.fromarray(image_np, mode='L')
-        
+        plt.imsave('output_image.png', tensor[0, 0].detach().cpu().numpy(), cmap='gray')
+   
+
         # Save to bytes buffer
         buffer = io.BytesIO()
-        pil_img.save(buffer, format='PNG')
+        plt.imsave(buffer, tensor[0, 0].detach().cpu().numpy(), cmap='gray', format='PNG')
+        
         
         # Convert to base64
         img_str = base64.b64encode(buffer.getvalue()).decode('utf-8')
@@ -262,6 +246,8 @@ def tensor_to_base64(tensor):
 
 @app.route('/api/generate', methods=['POST'])
 def generate():
+    global model  # Add this line to access the global model
+    
     if model is None:
         return jsonify({'error': 'Model not loaded. Check server logs for details.'}), 500
     
@@ -278,17 +264,20 @@ def generate():
         
         # Preprocess the image
         mask = preprocess_image(image_data)
+        
+        print(mask.shape)
         if mask is None:
             return jsonify({'error': 'Failed to preprocess image'}), 400
         
         # Run the model
         with torch.no_grad():
+            model = model.cuda()
+            mask = mask.cuda()
             mu1, sigma1 = model.encode(mask)
-            alpha = 0.01
-            z = mu1 + alpha * sigma1
+            z = mu1 + sigma1
             output = model.decode(z)
-            output = output[0, 0]
-            print(output.shape)
+            plt.imsave('output_image.png', output[0, 0].detach().cpu().numpy(), cmap='gray')
+
         
         # Convert back to base64
         result_img = tensor_to_base64(output)
