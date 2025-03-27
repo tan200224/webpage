@@ -8,9 +8,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Loader2, BrainCircuit, Image, ArrowRight, Upload, Plus } from "lucide-react";
+import { Loader2, BrainCircuit, Image, ArrowRight, Upload, Plus, Play } from "lucide-react";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+
 const SAMPLE_SCANS = [{
   id: 1,
   name: "Patient 001 - Slice 42",
@@ -36,10 +37,12 @@ const SAMPLE_SCANS = [{
   fullImage: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=800&auto=format&fit=crop",
   hasAbnormality: false
 }];
+
 const PancreaticCancerDemo = () => {
   const [selectedScan, setSelectedScan] = useState<number | null>(null);
   const [segmentationResult, setSegmentationResult] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isAnnotating, setIsAnnotating] = useState(false);
   const [confidenceThreshold, setConfidenceThreshold] = useState([75]);
   const [uploadedImages, setUploadedImages] = useState<{
     id: number;
@@ -50,10 +53,12 @@ const PancreaticCancerDemo = () => {
   }[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
+
   const handleScanSelect = (scanId: number) => {
     setSelectedScan(scanId);
     setSegmentationResult(null);
   };
+
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
@@ -87,9 +92,11 @@ const PancreaticCancerDemo = () => {
     };
     reader.readAsDataURL(file);
   };
+
   const triggerFileInput = () => {
     fileInputRef.current?.click();
   };
+
   const runSegmentation = async () => {
     if (selectedScan === null) {
       toast.error("Please select a CT scan first");
@@ -118,6 +125,36 @@ const PancreaticCancerDemo = () => {
       setIsProcessing(false);
     }
   };
+
+  const runAnnotation = async () => {
+    if (selectedScan === null) {
+      toast.error("Please select a CT scan first");
+      return;
+    }
+    
+    if (!segmentationResult) {
+      toast.error("Please run the AI analysis first before annotation");
+      return;
+    }
+    
+    setIsAnnotating(true);
+    
+    try {
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      toast.success("Pancreas annotation complete", {
+        description: "The model has generated detailed pancreas annotations on the selected scan."
+      });
+    } catch (error) {
+      toast.error("Error during annotation", {
+        description: "There was an error running the annotation process."
+      });
+      console.error(error);
+    } finally {
+      setIsAnnotating(false);
+    }
+  };
+
   return <div className="min-h-screen flex flex-col">
       <Helmet>
         <title>Pancreatic Cancer AI Diagnosis | Archie Tan</title>
@@ -261,6 +298,26 @@ const PancreaticCancerDemo = () => {
                     </Badge>
                   </div>
                 </div>}
+                
+              <div className="mt-4">
+                <Button 
+                  className="w-full" 
+                  disabled={!segmentationResult || isAnnotating}
+                  onClick={runAnnotation}
+                >
+                  {isAnnotating ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Processing Annotation...
+                    </>
+                  ) : (
+                    <>
+                      <BrainCircuit className="mr-2 h-4 w-4" />
+                      Run Pancreas Annotation
+                    </>
+                  )}
+                </Button>
+              </div>
             </div>
           </div>
           
