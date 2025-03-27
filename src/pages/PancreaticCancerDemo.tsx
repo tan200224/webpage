@@ -11,7 +11,6 @@ import { Input } from "@/components/ui/input";
 import { Loader2, BrainCircuit, Image, ArrowRight, Upload, Plus } from "lucide-react";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
-
 const SAMPLE_SCANS = [{
   id: 1,
   name: "Patient 001 - Slice 42",
@@ -37,7 +36,6 @@ const SAMPLE_SCANS = [{
   fullImage: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=800&auto=format&fit=crop",
   hasAbnormality: false
 }];
-
 const PancreaticCancerDemo = () => {
   const [selectedScan, setSelectedScan] = useState<number | null>(null);
   const [segmentationResult, setSegmentationResult] = useState<string | null>(null);
@@ -52,26 +50,21 @@ const PancreaticCancerDemo = () => {
   }[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
-
   const handleScanSelect = (scanId: number) => {
     setSelectedScan(scanId);
     setSegmentationResult(null);
   };
-
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
-
     if (!file.type.includes('image/')) {
       toast.error("Please upload an image file");
       return;
     }
-
     if (file.size > 5 * 1024 * 1024) {
       toast.error("File size exceeds 5MB limit");
       return;
     }
-
     const reader = new FileReader();
     reader.onload = e => {
       const result = e.target?.result as string;
@@ -94,11 +87,9 @@ const PancreaticCancerDemo = () => {
     };
     reader.readAsDataURL(file);
   };
-
   const triggerFileInput = () => {
     fileInputRef.current?.click();
   };
-
   const runSegmentation = async () => {
     if (selectedScan === null) {
       toast.error("Please select a CT scan first");
@@ -107,11 +98,8 @@ const PancreaticCancerDemo = () => {
     setIsProcessing(true);
     try {
       await new Promise(resolve => setTimeout(resolve, 2500));
-
       const scan = [...SAMPLE_SCANS, ...uploadedImages].find(s => s.id === selectedScan);
-
       setSegmentationResult(scan?.fullImage || null);
-
       if (scan?.hasAbnormality) {
         toast.warning("Potential abnormality detected", {
           description: "The model has identified regions of concern in the pancreas."
@@ -130,7 +118,6 @@ const PancreaticCancerDemo = () => {
       setIsProcessing(false);
     }
   };
-
   return <div className="min-h-screen flex flex-col">
       <Helmet>
         <title>Pancreatic Cancer AI Diagnosis | Archie Tan</title>
@@ -232,10 +219,7 @@ const PancreaticCancerDemo = () => {
                     </DialogContent>
                   </Dialog>
                   
-                  <div 
-                    className="relative border-2 rounded-lg overflow-hidden cursor-pointer transition-all hover:shadow-md border-primary/30 hover:border-primary"
-                    onClick={() => navigate('/synthetic-ct-demo')}
-                  >
+                  <div className="relative border-2 rounded-lg overflow-hidden cursor-pointer transition-all hover:shadow-md border-primary/30 hover:border-primary" onClick={() => navigate('/synthetic-ct-demo')}>
                     <div className="aspect-square flex flex-col items-center justify-center gap-2 bg-primary/10">
                       <BrainCircuit className="h-8 w-8 text-primary" />
                       <span className="text-sm font-medium text-primary">Generate One</span>
@@ -246,34 +230,7 @@ const PancreaticCancerDemo = () => {
                 </div>
               </div>
               
-              <div className="bg-background border rounded-xl shadow-sm p-6">
-                <h2 className="text-xl font-semibold mb-4">Model Settings</h2>
-                
-                <div className="space-y-4">
-                  <div className="space-y-2">
-                    <div className="flex justify-between items-center">
-                      <label className="text-sm font-medium">Confidence Threshold</label>
-                      <span className="text-sm text-muted-foreground">{confidenceThreshold}%</span>
-                    </div>
-                    <Slider min={50} max={95} step={1} value={confidenceThreshold} onValueChange={setConfidenceThreshold} />
-                    <p className="text-xs text-muted-foreground">
-                      Higher values increase precision but may miss some abnormalities.
-                    </p>
-                  </div>
-                </div>
-                
-                <div className="mt-6">
-                  <Button onClick={runSegmentation} disabled={isProcessing || selectedScan === null} className="w-full gradient-bg text-white border-none">
-                    {isProcessing ? <>
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Processing Scan...
-                      </> : <>
-                        <BrainCircuit className="mr-2 h-4 w-4" />
-                        Run Segmentation Model
-                      </>}
-                  </Button>
-                </div>
-              </div>
+              
             </div>
             
             <div className="bg-background border rounded-xl shadow-sm p-6">
@@ -290,20 +247,7 @@ const PancreaticCancerDemo = () => {
                   </div>}
               </div>
               
-              {segmentationResult && <div className="mt-4 bg-secondary/30 p-4 rounded-lg">
-                  <h3 className="font-medium mb-2">Analysis Results</h3>
-                  <p className="text-sm text-muted-foreground mb-3">
-                    {[...SAMPLE_SCANS, ...uploadedImages].find(s => s.id === selectedScan)?.hasAbnormality ? "The model has detected regions of interest that might indicate pancreatic abnormalities. The highlighted area shows potential tissue changes that may require further investigation." : "No significant abnormalities detected in the pancreatic region. The model analyzed the tissue density and structure patterns typical in healthy pancreas tissue."}
-                  </p>
-                  <div className="flex flex-wrap gap-2 mb-3">
-                    <Badge variant="outline" className="bg-background">
-                      Confidence: {Math.round(85 + Math.random() * 10)}%
-                    </Badge>
-                    <Badge variant="outline" className="bg-background">
-                      Processing Time: {Math.round(1.2 + Math.random() * 0.8)}s
-                    </Badge>
-                  </div>
-                </div>}
+              {segmentationResult}
             </div>
           </div>
           
@@ -332,5 +276,4 @@ const PancreaticCancerDemo = () => {
       <Footer />
     </div>;
 };
-
 export default PancreaticCancerDemo;
