@@ -12,7 +12,6 @@ import { Loader2, BrainCircuit, Image, ArrowRight, Upload, Plus } from "lucide-r
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 
-// Sample CT scan images for the demo
 const SAMPLE_SCANS = [{
   id: 1,
   name: "Patient 001 - Slice 42",
@@ -38,6 +37,7 @@ const SAMPLE_SCANS = [{
   fullImage: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=800&auto=format&fit=crop",
   hasAbnormality: false
 }];
+
 const PancreaticCancerDemo = () => {
   const [selectedScan, setSelectedScan] = useState<number | null>(null);
   const [segmentationResult, setSegmentationResult] = useState<string | null>(null);
@@ -52,25 +52,26 @@ const PancreaticCancerDemo = () => {
   }[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
+
   const handleScanSelect = (scanId: number) => {
     setSelectedScan(scanId);
     setSegmentationResult(null);
   };
+
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
-    // Check file type
     if (!file.type.includes('image/')) {
       toast.error("Please upload an image file");
       return;
     }
 
-    // Check file size (limit to 5MB)
     if (file.size > 5 * 1024 * 1024) {
       toast.error("File size exceeds 5MB limit");
       return;
     }
+
     const reader = new FileReader();
     reader.onload = e => {
       const result = e.target?.result as string;
@@ -80,11 +81,10 @@ const PancreaticCancerDemo = () => {
           name: `My scan - ${file.name}`,
           thumbnail: result,
           fullImage: result,
-          hasAbnormality: Math.random() > 0.5 // Randomly determine for demo purposes
+          hasAbnormality: Math.random() > 0.5
         };
         setUploadedImages(prev => [...prev, newImage]);
         toast.success("Image uploaded successfully");
-        // Select the newly uploaded image
         setSelectedScan(newImage.id);
         setSegmentationResult(null);
       }
@@ -94,9 +94,11 @@ const PancreaticCancerDemo = () => {
     };
     reader.readAsDataURL(file);
   };
+
   const triggerFileInput = () => {
     fileInputRef.current?.click();
   };
+
   const runSegmentation = async () => {
     if (selectedScan === null) {
       toast.error("Please select a CT scan first");
@@ -104,16 +106,12 @@ const PancreaticCancerDemo = () => {
     }
     setIsProcessing(true);
     try {
-      // Simulate the segmentation process with a delay
       await new Promise(resolve => setTimeout(resolve, 2500));
 
-      // Get the selected scan
       const scan = [...SAMPLE_SCANS, ...uploadedImages].find(s => s.id === selectedScan);
 
-      // Set the result (in a real app, this would be the result from the segmentation model)
       setSegmentationResult(scan?.fullImage || null);
 
-      // Show success message
       if (scan?.hasAbnormality) {
         toast.warning("Potential abnormality detected", {
           description: "The model has identified regions of concern in the pancreas."
@@ -132,6 +130,7 @@ const PancreaticCancerDemo = () => {
       setIsProcessing(false);
     }
   };
+
   return <div className="min-h-screen flex flex-col">
       <Helmet>
         <title>Pancreatic Cancer AI Diagnosis | Archie Tan</title>
@@ -232,6 +231,18 @@ const PancreaticCancerDemo = () => {
                       </div>
                     </DialogContent>
                   </Dialog>
+                  
+                  <div 
+                    className="relative border-2 rounded-lg overflow-hidden cursor-pointer transition-all hover:shadow-md border-primary/30 hover:border-primary"
+                    onClick={() => navigate('/synthetic-ct-demo')}
+                  >
+                    <div className="aspect-square flex flex-col items-center justify-center gap-2 bg-primary/10">
+                      <BrainCircuit className="h-8 w-8 text-primary" />
+                      <span className="text-sm font-medium text-primary">Generate One</span>
+                      <span className="text-xs text-muted-foreground">Create your own synthetic CT</span>
+                      <ArrowRight className="h-4 w-4 text-primary mt-1" />
+                    </div>
+                  </div>
                 </div>
               </div>
               
@@ -270,7 +281,6 @@ const PancreaticCancerDemo = () => {
               <div className="border-2 border-dashed border-muted-foreground/20 rounded-lg h-[400px] flex items-center justify-center overflow-hidden bg-black/5">
                 {segmentationResult ? <div className="relative w-full h-full">
                     <img src={segmentationResult} alt="Segmentation Result" className="w-full h-full object-contain" />
-                    {/* Overlay highlighting the segmented area (simulated) */}
                     {[...SAMPLE_SCANS, ...uploadedImages].find(s => s.id === selectedScan)?.hasAbnormality && <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-16 border-2 border-red-500 rounded-full animate-pulse" />}
                   </div> : <div className="text-center p-6">
                     <Image className="h-10 w-10 mx-auto mb-3 text-muted-foreground/50" />
@@ -322,4 +332,5 @@ const PancreaticCancerDemo = () => {
       <Footer />
     </div>;
 };
+
 export default PancreaticCancerDemo;
