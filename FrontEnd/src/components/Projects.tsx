@@ -13,7 +13,7 @@ const PROJECTS_DATA = [
     description: "Cutting-edge research implementing segmentation models for early diagnosis of pancreatic cancer through CT scan analysis with 87.16% accuracy.",
     image: "https://images.unsplash.com/photo-1607798748738-b15c40d33d57?q=80&w=2670&auto=format&fit=crop",
     technologies: ["PyTorch", "TorchVision", "Python", "Data Augmentation", "3D Imaging"],
-    liveUrl: "#",
+    liveUrl: "/pancreatic-cancer-demo",
     githubUrl: "https://github.com/tan200224/Research_Blog",
     icon: <BrainCircuit className="h-10 w-10 text-primary" />
   },
