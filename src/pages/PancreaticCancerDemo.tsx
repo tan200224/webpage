@@ -8,9 +8,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Loader2, BrainCircuit, Image, ArrowRight, Upload, Plus } from "lucide-react";
+import { Loader2, BrainCircuit, Image, ArrowRight, Upload, Plus, Play } from "lucide-react";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+
 const SAMPLE_SCANS = [{
   id: 1,
   name: "Patient 001 - Slice 42",
@@ -36,6 +37,7 @@ const SAMPLE_SCANS = [{
   fullImage: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=800&auto=format&fit=crop",
   hasAbnormality: false
 }];
+
 const PancreaticCancerDemo = () => {
   const [selectedScan, setSelectedScan] = useState<number | null>(null);
   const [segmentationResult, setSegmentationResult] = useState<string | null>(null);
@@ -50,10 +52,12 @@ const PancreaticCancerDemo = () => {
   }[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
+
   const handleScanSelect = (scanId: number) => {
     setSelectedScan(scanId);
     setSegmentationResult(null);
   };
+
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
@@ -87,9 +91,11 @@ const PancreaticCancerDemo = () => {
     };
     reader.readAsDataURL(file);
   };
+
   const triggerFileInput = () => {
     fileInputRef.current?.click();
   };
+
   const runSegmentation = async () => {
     if (selectedScan === null) {
       toast.error("Please select a CT scan first");
@@ -118,6 +124,7 @@ const PancreaticCancerDemo = () => {
       setIsProcessing(false);
     }
   };
+
   return <div className="min-h-screen flex flex-col">
       <Helmet>
         <title>Pancreatic Cancer AI Diagnosis | Archie Tan</title>
@@ -230,7 +237,51 @@ const PancreaticCancerDemo = () => {
                 </div>
               </div>
               
-              
+              <div className="bg-background border rounded-xl shadow-sm p-6">
+                <h2 className="text-xl font-semibold mb-4">Run AI Analysis</h2>
+                
+                <div className="mb-6">
+                  <div className="flex items-center justify-between mb-2">
+                    <label className="text-sm font-medium">Detection Confidence Threshold</label>
+                    <span className="text-sm text-muted-foreground">{confidenceThreshold}%</span>
+                  </div>
+                  <Slider 
+                    value={confidenceThreshold} 
+                    onValueChange={setConfidenceThreshold}
+                    max={100}
+                    step={1}
+                    className="mb-4"
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    Higher values increase precision but may miss subtle abnormalities. Lower values increase sensitivity but may produce false positives.
+                  </p>
+                </div>
+                
+                <Button 
+                  onClick={runSegmentation} 
+                  disabled={isProcessing || selectedScan === null} 
+                  className="w-full py-6 text-lg"
+                >
+                  {isProcessing ? (
+                    <>
+                      <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                      Processing...
+                    </>
+                  ) : (
+                    <>
+                      <Play className="mr-2 h-5 w-5" />
+                      Run AI Analysis
+                    </>
+                  )}
+                </Button>
+                
+                <div className="mt-4 text-xs text-center text-muted-foreground">
+                  {selectedScan === null ? 
+                    "Please select a CT scan first" : 
+                    "Analysis will process the selected CT scan using a pancreatic segmentation model"
+                  }
+                </div>
+              </div>
             </div>
             
             <div className="bg-background border rounded-xl shadow-sm p-6">
@@ -289,4 +340,5 @@ const PancreaticCancerDemo = () => {
       <Footer />
     </div>;
 };
+
 export default PancreaticCancerDemo;
